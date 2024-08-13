@@ -127,7 +127,6 @@ export default {
         userId : vm.userId,
         userPw : vm.userPw
       };
-      console.log(dt);
       axios({
         method : 'post',
         header: { 'Content-Type': 'application/json; charset=UTF-8' },
