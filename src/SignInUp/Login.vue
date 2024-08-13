@@ -26,7 +26,7 @@
   </div>
 
   <!-- 에러 모달 -->
-  <div class="modal" v-if="isModalVisivle">
+  <div class="modal" v-if="isErrorModal">
       <div class="cookies-card2">
           <p class="cookie-heading2">{{ modalTitle }}</p>
           <p class="cookie-para2">
@@ -63,7 +63,7 @@ export default {
   },
   methods: {
     closeModal() {
-      this.isModalVisivle = false;
+      this.isErrorModal = false;
       if(this.isLoginSuccess == 1) {
         this.$router.push({ name: 'CategoryChoice' });
       }
@@ -138,7 +138,7 @@ export default {
             vm.modalTitle = '로그인 실패';
             vm.modalMsg = response.data.message;
             vm.isLoginSuccess = 0;
-            vm.isModalVisivle = true;
+            vm.isErrorModal = true;
           }
           if(response.data.result == 1) {
             sessionStorage.setItem('JSESSIONID', response.data.JSESSIONID);
@@ -146,7 +146,7 @@ export default {
             vm.modalTitle = '로그인 성공';
             vm.modalMsg = '로그인에 성공하였습니다.';
             vm.isLoginSuccess = 1;
-            vm.isModalVisivle = true;
+            vm.isErrorModal = true;
           }
         })
         .catch(function(){
