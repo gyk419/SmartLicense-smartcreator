@@ -14,7 +14,7 @@ export default {
 
     };
   },
-// test
+
   methods: {
     startLoading() {
       setTimeout(() => {

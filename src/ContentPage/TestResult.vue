@@ -117,7 +117,7 @@ export default {
       await axios({
         method : 'post',
         header: { 'Content-Type': 'application/json; charset=UTF-8' },
-        url: "/mode/loadTestScore",
+        url: "https://port-0-smartlicense-smartcreator-lzqfjvj513cc6b09.sel4.cloudtype.app/mode/loadTestScore",
         data : loadData,
       })
         .then(response => {

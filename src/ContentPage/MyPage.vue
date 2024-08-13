@@ -105,7 +105,7 @@ export default {
         axios({
           method : 'post',
           header: { 'Content-Type': 'application/json; charset=UTF-8' },
-          url: "/api/loadUserInfo",
+          url: "https://port-0-smartlicense-smartcreator-lzqfjvj513cc6b09.sel4.cloudtype.app/api/loadUserInfo",
           data : data,
         })
           .then(response => {
@@ -134,7 +134,7 @@ export default {
         axios({
           method : 'post',
           header: { 'Content-Type': 'application/json; charset=UTF-8' },
-          url: "/memberLogin/logout",
+          url: "https://port-0-smartlicense-smartcreator-lzqfjvj513cc6b09.sel4.cloudtype.app/memberLogin/logout",
           data : {},
         })
           .then(() => {

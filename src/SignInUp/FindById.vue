@@ -126,7 +126,7 @@ export default {
             };
 
             try {
-                const response = await axios.post('/api/findByID', userInfo);
+                const response = await axios.post('https://port-0-smartlicense-smartcreator-lzqfjvj513cc6b09.sel4.cloudtype.app/api/findByID', userInfo);
                 this.serverVerificationCode = response.data.verificationCode;
                 this.userID = response.data.userID;
                 this.modalTitle = '인증번호'

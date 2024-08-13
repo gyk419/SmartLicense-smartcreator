@@ -73,7 +73,7 @@ export default {
                 newPassword: this.newPw
             };
 
-            axios.post('/api/resetPassword', payload)
+            axios.post('https://port-0-smartlicense-smartcreator-lzqfjvj513cc6b09.sel4.cloudtype.app/api/resetPassword', payload)
                 .then(() => {
                     this.modalTitle = '재설정 완료';
                     this.modalMsg = '비밀번호를 재설정하였습니다.';

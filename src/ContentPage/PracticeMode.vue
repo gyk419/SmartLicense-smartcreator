@@ -154,7 +154,7 @@ export default {
       await axios({
         method: 'post',
         header: { 'Content-Type': 'application/json; charset=UTF-8' },
-        url: "/mode/userSelectAnswer",
+        url: "https://port-0-smartlicense-smartcreator-lzqfjvj513cc6b09.sel4.cloudtype.app/mode/userSelectAnswer",
         data: postData,
       })
         .then(response => {
@@ -180,7 +180,7 @@ export default {
         start_test_date: this.start_test_date
       };
 
-      axios.post('/mode/practiceModeLoadExam', criteria)
+      axios.post('https://port-0-smartlicense-smartcreator-lzqfjvj513cc6b09.sel4.cloudtype.app/mode/practiceModeLoadExam', criteria)
         .then(response => {
           this.problems = [],
             this.problems = response.data;
