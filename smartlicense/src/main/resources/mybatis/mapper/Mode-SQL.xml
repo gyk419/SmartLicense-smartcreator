@@ -75,7 +75,7 @@
                 #{member_id},
                 #{exam_date},
                 (
-                SELECT SUM(usa.is_correct)
+                SELECT COUNT(usa.is_correct)
                 FROM license l
                   JOIN detail_license dl ON l.license_idx = dl.license_idx
                   JOIN subject s ON dl.detail_license_idx = s.detail_license_idx
