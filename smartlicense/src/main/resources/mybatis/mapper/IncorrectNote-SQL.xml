@@ -39,7 +39,7 @@
 	내용 :  총 문제 수, 남은 시간 불러오기
     -->
     <select id="getExamRecord" parameterType="HashMap" resultType="HashMap">
-        SELECT question_count, remaining_time, detail_license_name as detail_license, start_test_date, exam_date, member_id
+        SELECT question_count, remaining_time, detail_license_name as detail_license, start_test_date, exam_date, member_id, mode
         FROM exam_record
         WHERE exam_record_idx = #{exam_record_idx}
     </select>
