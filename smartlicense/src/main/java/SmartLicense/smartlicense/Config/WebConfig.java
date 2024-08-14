@@ -28,12 +28,12 @@ public class WebConfig implements WebMvcConfigurer {
                 .allowCredentials(true);
     }
 
-    @Override
-    public void addInterceptors(InterceptorRegistry interceptorRegistry) {
-        interceptorRegistry.addInterceptor(new AuthenticationInterceptor())
-                .addPathPatterns("/**")
-                .excludePathPatterns("/memberLogin/verify","/memberLogin/logout");
-    }
+//    @Override
+//    public void addInterceptors(InterceptorRegistry interceptorRegistry) {
+//        interceptorRegistry.addInterceptor(new AuthenticationInterceptor())
+//                .addPathPatterns("/**")
+//                .excludePathPatterns("/memberLogin/verify","/memberLogin/logout");
+//    }
 
 
 }
