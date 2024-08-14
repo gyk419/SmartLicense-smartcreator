@@ -61,6 +61,9 @@
                     <img :class="getClassImg(item, item.option4)" v-if="item.option4.includes('https://ifh.cc')" :src="item.option4">
                     <div :class="getClass(item, item.option4)" v-else>{{ 4 }}.&nbsp;{{ item.option4 }}</div>
                 </div>
+                <div class="detail_info" v-if="isTestMode">
+                    <div :class="getClass(item, '잘 모르겠어요')">{{ 5 }}.&nbsp;잘 모르겠어요</div>
+                </div>
                 <div class="description-container">
                     <div @click="openDescription(index)">해설보기</div>
                     <div class="description" v-show="isOpenDescription[index]">
@@ -113,6 +116,7 @@ export default {
             member_id : sessionStorage.getItem('USER_ID'),
             isOpenDescription : [],
             exam_record_idx : '',
+            isTestMode : false, // 시험모드일 때는 보기에 잘 모르겠어요 표시.
         };
     },
     computed: {
@@ -168,6 +172,9 @@ export default {
             })
                 .then(response => {
                     if(response.data != null) {
+                        if(response.data.exam_record.mode == '시험'){
+                            vm.isTestMode = true;
+                        }
                         vm.totalQuestionList = response.data.question;
                         vm.totalQCount = response.data.exam_record.question_count;
                         vm.remainingTime = response.data.exam_record.remaining_time;
