@@ -60,6 +60,30 @@
             </div>
         </div>
     </div>
+    <!-- 문제 로딩시 나오는 시험응시전 안내창 -->
+    <div class="modal2" v-if="isLoadingQ">
+      <div class="loading_card" >
+        <div class="loading_header">
+          <span class="loading_icon">
+            <svg fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+              <path clip-rule="evenodd" d="M18 3a1 1 0 00-1.447-.894L8.763 6H5a3 3 0 000 6h.28l1.771 5.316A1 1 0 008 18h1a1 1 0 001-1v-4.382l6.553 3.276A1 1 0 0018 15V3z" fill-rule="evenodd"></path>
+            </svg>
+          </span>
+          <p class="loading_alert">안내</p>
+        </div>
+        <p class="loading_message">
+          시험모드는 시간내 문제를 풀고 제출하기를 눌러야 응시기록에 저장이 됩니다.<br><br>또한 시험 중간에 종료할 시 저장이 되지 않는점 유의 바랍니다.<br><br>문제풀기 버튼이 생성되면 바로 문제를 푸시면 됩니다.<br><br>여러분의 합격을 기원합니다.
+        </p>
+        <div class="loading_actions">
+          <a class="loading_read" @click="startTimer()" v-if="!isLoadingSuccess">
+            응시하기
+          </a>
+          <svg class="loading" viewBox="25 25 50 50" v-if="isLoadingSuccess">
+            <circle class="loading_circle" r="20" cy="50" cx="50"></circle>
+          </svg>
+        </div>
+      </div>
+    </div>
 </template>
 
 <script>
@@ -104,7 +128,10 @@ export default {
 
       isErrorModal: false, // 에러 모달 v-if
       modalTitle: '',
-      modalMsg: ''
+      modalMsg: '',
+
+      isLoadingQ : false,
+      isLoadingSuccess : true,
     }
   },
   computed: {
@@ -311,6 +338,7 @@ export default {
           this.viewResult();
         }
       }, 1000);
+      this.isLoadingQ = false;
     },
 
     // 시험 문제 불러오는 함수
@@ -323,6 +351,7 @@ export default {
         subject : this.$cookies.get("selectedSubjects"),
         license_name : this.$cookies.get('license')
       };
+      this.isLoadingQ = true;
       axios({
         method : 'post',
         header: { 'Content-Type': 'application/json; charset=UTF-8' },
@@ -348,12 +377,12 @@ export default {
           const formattedDate = `${currentDate.getFullYear()}-${currentDate.getMonth() + 1}-${currentDate.getDate()} ${currentDate.getHours()}:${currentDate.getMinutes()}:${currentDate.getSeconds()}`;
           this.$cookies.set("startTestDate", formattedDate);
           this.timeRemaining = response.data.timeRemaining * 60; // 
-          // 타이머
-          this.startTimer();
           this.selectedOption = '';
           this.isCorret = 0;
+          this.isLoadingSuccess = false;
         })
         .catch(()=>{
+          this.isLoadingQ = false;
           this.errorModalContent();
         });
     },
@@ -680,5 +709,127 @@ export default {
     background-color: rgb(34, 34, 34);
     color: white;
     font-size: 1em;
+}
+
+/* 문제 로딩시 나오는 시험응시전 안내창 css */
+.modal2 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 6%;
+    width: 100%;
+    height: 94%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(50px);
+}
+
+.loading_card {
+  max-width: 70%;
+  border-width: 1px;
+  border-color: rgba(219, 234, 254, 1);
+  border-radius: 1rem;
+  background-color: rgba(255, 255, 255, 1);
+  padding: 1rem;
+}
+
+.loading_header {
+  display: flex;
+  align-items: center;
+  grid-gap: 1rem;
+  gap: 1rem;
+}
+
+.loading_icon {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  background-color: rgba(96, 165, 250, 1);
+  padding: 0.5rem;
+  color: rgba(255, 255, 255, 1);
+}
+
+.loading_icon svg {
+  height: 1rem;
+  width: 1rem;
+}
+
+.loading_alert {
+  font-weight: 600;
+  color: rgba(107, 114, 128, 1);
+}
+
+.loading_message {
+  margin-top: 1rem;
+  color: rgba(107, 114, 128, 1);
+}
+
+.loading_actions {
+  text-align: center;
+  margin-top: 1.5rem;
+}
+
+.loading_actions a {
+  text-decoration: none;
+}
+
+.loading_read {
+  display: inline-block;
+  border-radius: 0.5rem;
+  width: 100%;
+  padding: 0.75rem 1.25rem;
+  text-align: center;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 600;
+}
+
+.loading_read {
+  background-color: rgba(59, 130, 246, 1);
+  color: rgba(255, 255, 255, 1);
+}
+
+/* From Uiverse.io by barisdogansutcu */ 
+.loading {
+ width: 3.25em;
+ transform-origin: center;
+ animation: rotate4 2s linear infinite;
+}
+
+.loading_circle {
+ fill: none;
+ stroke: hsl(214, 97%, 59%);
+ stroke-width: 2;
+ stroke-dasharray: 1, 200;
+ stroke-dashoffset: 0;
+ stroke-linecap: round;
+ animation: dash4 1.5s ease-in-out infinite;
+}
+
+@keyframes rotate4 {
+ 100% {
+  transform: rotate(360deg);
+ }
+}
+
+@keyframes dash4 {
+ 0% {
+  stroke-dasharray: 1, 200;
+  stroke-dashoffset: 0;
+ }
+
+ 50% {
+  stroke-dasharray: 90, 200;
+  stroke-dashoffset: -35px;
+ }
+
+ 100% {
+  stroke-dashoffset: -125px;
+ }
 }
 </style>
