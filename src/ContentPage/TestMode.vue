@@ -84,6 +84,27 @@
         </div>
       </div>
     </div>
+    <!-- 마지막 문제 제출 후 결과를 저장하는 안내창 -->
+    <div class="modal" v-if="isTestDone">
+      <div class="loading_card" >
+        <div class="loading_header">
+          <span class="loading_icon">
+            <svg fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+              <path clip-rule="evenodd" d="M18 3a1 1 0 00-1.447-.894L8.763 6H5a3 3 0 000 6h.28l1.771 5.316A1 1 0 008 18h1a1 1 0 001-1v-4.382l6.553 3.276A1 1 0 0018 15V3z" fill-rule="evenodd"></path>
+            </svg>
+          </span>
+          <p class="loading_alert">안내</p>
+        </div>
+        <p class="loading_message">
+          채점중이오니 잠시만 기다려 주세요.
+        </p>
+        <div class="loading_actions">
+          <svg class="loading" viewBox="25 25 50 50">
+            <circle class="loading_circle" r="20" cy="50" cx="50"></circle>
+          </svg>
+        </div>
+      </div>
+    </div>
 </template>
 
 <script>
@@ -132,6 +153,7 @@ export default {
 
       isLoadingQ : false,
       isLoadingSuccess : true,
+      isTestDone : false,
     }
   },
   computed: {
@@ -190,6 +212,7 @@ export default {
       if(vm.selectedOption === '') {
         return;
       }
+      vm.isTestDone = true; // 채점중 모달창 보이기
       vm.subjectQnumberSum += 1;
       if(vm.totalQuestionList[vm.Qnumber-1].answer === vm.selectedOption){
         vm.isCorret = 1; // 정답일때
@@ -218,7 +241,8 @@ export default {
       })
         .then({})
         .catch(() => {
-          this.errorModalContent();
+          vm.isTestDone = false;
+          vm.errorModalContent();
         });
       
       let remainingTime = vm.remainingTimeCal();
@@ -258,11 +282,13 @@ export default {
           if(response.data > 0) {
             vm.$router.push({ name: 'TestResult' });  
           } else {
-            this.errorModalContent();
+            vm.isTestDone = false;
+            vm.errorModalContent();
           }
         })
         .catch(()=>{
-          this.errorModalContent();
+          vm.isTestDone = false;
+          vm.errorModalContent();
         })
     },
     // 다음문제 버튼 클릭
@@ -294,13 +320,13 @@ export default {
       })
         .then(response => {
           if (response.data.result == 0) {
-            this.modalTitle = '저장 실패';
-            this.modalMsg = '저장에 실패했습니다';
-            this.isErrorModal = true;
+            vm.modalTitle = '저장 실패';
+            vm.modalMsg = '저장에 실패했습니다';
+            vm.isErrorModal = true;
           }
         })
         .catch(() => {
-          this.errorModalContent();
+          vm.errorModalContent();
         });
       
       vm.Qnumber += 1; // 문제번호
